@@ -3,9 +3,7 @@ const constants = require('../models/constants');
 
 const commands = {
   prefix: {
-    help: [
-      'Permet de changer le préfix des commandes du bot.',
-    ],
+    help: ['Permet de changer le préfix des commandes du bot.'],
     args: '[prefix]',
     runCommand: (args, message) => {
       if (args.length === 0) {
@@ -14,16 +12,14 @@ const commands = {
       }
       constants.prefix = args.join(' ');
       Utils.reply(message, 'Le préfix a bien été modifié.');
-    },
+    }
   },
   logChannel: {
-    help: [
-      'le channel ou seront log les commandes.',
-    ],
+    help: ['le channel ou seront log les commandes.'],
     args: '[#channel]',
     runCommand: (args, message) => {
       if (args.length === 0) {
-        Utils.reply(message, `**channel: **: <#${constants.logChannel }>`);
+        Utils.reply(message, `**channel: **: <#${constants.logChannel}>`);
         return;
       }
       if (!message.mentions.channels && !message.mentions.channels.first()) {
@@ -32,12 +28,10 @@ const commands = {
       }
       constants.logChannel = message.mentions.channels.first().id;
       Utils.reply(message, 'Le channel de log à bien été modifié.');
-    },
+    }
   },
   welcome: {
-    help: [
-      'Permet de changer le message de bienvenue.',
-    ],
+    help: ['Permet de changer le message de bienvenue.'],
     args: '[message]',
     runCommand: (args, message) => {
       if (args.length === 0) {
@@ -46,21 +40,21 @@ const commands = {
       }
       constants.welcomeMessage = args.join(' ');
       Utils.reply(message, 'Le message de bienvenue a bien été modifié.');
-    },
-  },
+    }
+  }
 };
 
-const help = (message) => {
+const help = message => {
   const keys = Object.keys(commands);
   const fields = [];
-  keys.forEach((command) => {
+  keys.forEach(command => {
     fields.push({
       text: commands[command].help,
       title: `${constants.prefix}config ${command} ${commands[command].args}`,
-      grid: false,
+      grid: false
     });
   });
-  Utils.sendEmbed(message, 0x00AFFF, 'Liste des commandes de config', '', message.author, fields);
+  Utils.sendEmbed(message, 0x00afff, 'Liste des commandes de config', '', message.author, fields);
 };
 
 module.exports = {
@@ -79,5 +73,5 @@ module.exports = {
     } else {
       help(message);
     }
-  },
+  }
 };

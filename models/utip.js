@@ -1,62 +1,60 @@
-var fs = require('fs');
-var Utils = require('../utils');
-var utip = {
+const fs = require('fs');
+const Utils = require('../utils');
+
+// TODO: make a class out of it
+let utip = {
   found: 0,
   goal: 0,
-  url: "https://www.utip.io/stupideconomics",
+  url: 'https://www.utip.io/stupideconomics',
   percent: 0,
   channel: null,
   cooldown: null,
   lastUsed: null
-}
+};
 
-function save() {
-    fs.writeFile(__dirname + "/../data/utip.json", JSON.stringify(utip), function (err) {
-        if (err) {
-            return Utils.log(err, true);
-        }
-        //Utils.log(`The ${Utils.Color.FgYellow}utip${Utils.Color.Reset} file was saved!`);
-    });
-}
+const save = () => {
+  fs.writeFile(`${__dirname}/../data/utip.json`, JSON.stringify(utip), err => {
+    return Utils.log(err, true);
+  });
+};
 
 function load() {
-    return new Promise((resolve, reject) => {
-
-        fs.readFile(__dirname + '/../data/utip.json', (err, data) => {
-            if (err) return;
-            utip = JSON.parse(data);
-            resolve(utip);
-        });
-    })
+  return new Promise(resolve => {
+    fs.readFile(`${__dirname}/../data/utip.json`, (err, data) => {
+      if (err) return;
+      utip = JSON.parse(data);
+      resolve(utip);
+    });
+  });
 }
 module.exports = {
-  init: function () {
-      return new Promise((resolve, reject) => {
-          load()
-              .then(r => resolve(r))
-              .catch(e => reject(e));
-      });
+  init() {
+    return new Promise((resolve, reject) => {
+      load()
+        .then(r => resolve(r))
+        .catch(e => reject(e));
+    });
   },
   get found() {
-      return utip.found;
+    return utip.found;
   },
   get goal() {
-      return utip.goal;
+    return utip.goal;
   },
   get url() {
-      return utip.url;
+    return utip.url;
   },
   get percent() {
-      return utip.percent;
+    return utip.percent;
   },
   get channel() {
-      return utip.channel;
+    return utip.channel;
   },
   get cooldown() {
-      return utip.cooldown;
+    return utip.cooldown;
   },
   get lastUsed() {
-      return utip.lastUsed;
+    return utip.lastUsed;
   },
   set found(found) {
     utip.found = found;

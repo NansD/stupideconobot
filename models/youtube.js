@@ -1,48 +1,48 @@
-var fs = require('fs');
-var Utils = require('../utils');
-var youtube = {
-    interval: 1000,
-    messages: [],
-    capmessages: [],
-    lastNbSubscribers: 0,
-    channel: null,
-}
+const fs = require('fs');
+const Utils = require('../utils');
+
+let youtube = {
+  interval: 1000,
+  messages: [],
+  capmessages: [],
+  lastNbSubscribers: 0,
+  channel: null
+};
 
 function save() {
-    fs.writeFile(__dirname + "/../data/youtube.json", JSON.stringify(youtube), function (err) {
-        if (err) {
-            return Utils.log(err, true);
-        }
-        //Utils.log(`The ${Utils.Color.FgYellow}youtube${Utils.Color.Reset} file was saved!`);
-    });
+  fs.writeFile(`${__dirname}/../data/youtube.json`, JSON.stringify(youtube), err => {
+    if (err) {
+      return Utils.log(err, true);
+    }
+    // Utils.log(`The ${Utils.Color.FgYellow}youtube${Utils.Color.Reset} file was saved!`);
+  });
 }
 
 function load() {
-    return new Promise((resolve, reject) => {
-
-        fs.readFile(__dirname + '/../data/youtube.json', (err, data) => {
-            if (err) return;
-            youtube = JSON.parse(data);
-            resolve(youtube);
-        });
-    })
+  return new Promise((resolve, reject) => {
+    fs.readFile(`${__dirname}/../data/youtube.json`, (err, data) => {
+      if (err) return;
+      youtube = JSON.parse(data);
+      resolve(youtube);
+    });
+  });
 }
 module.exports = {
-  init: function () {
-      return new Promise((resolve, reject) => {
-          load()
-              .then(r => resolve(r))
-              .catch(e => reject(e));
-      });
+  init() {
+    return new Promise((resolve, reject) => {
+      load()
+        .then(r => resolve(r))
+        .catch(e => reject(e));
+    });
   },
   get interval() {
-      return youtube.interval;
+    return youtube.interval;
   },
   get messages() {
-      return youtube.messages;
+    return youtube.messages;
   },
   get capmessages() {
-      return youtube.capmessages;
+    return youtube.capmessages;
   },
   get lastNbSubscribers() {
     return youtube.lastNbSubscribers;
@@ -65,33 +65,32 @@ module.exports = {
     save();
     return youtube.channel;
   },
-  addMessage: function(message) {
+  addMessage(message) {
     youtube.messages.push(message);
     save();
     return youtube.messages;
   },
-  delMessage: function(index) {
+  delMessage(index) {
     youtube.messages.splice(index, 1);
     save();
     return youtube.messages;
   },
-  addCapMessage: function(capmessage) {
+  addCapMessage(capmessage) {
     youtube.capmessages.push(capmessage);
     save();
     return youtube.capmessages;
   },
-  delCapMessage: function(index) {
+  delCapMessage(index) {
     youtube.capmessages.splice(index, 1);
     save();
     return youtube.capmessages;
   },
-  getNextCap: function(nb) {
-    
-    nbOfZerro = (nb + '').length - 1;
-    firstNumber =  Math.floor(nb / Math.pow(10,nbOfZerro));
+  getNextCap(nb) {
+    nbOfZerro = `${nb}`.length - 1;
+    firstNumber = Math.floor(nb / Math.pow(10, nbOfZerro));
     if (firstNumber >= 8) {
-      return Math.pow(10,nbOfZerro + 1); 
+      return Math.pow(10, nbOfZerro + 1);
     }
-    return Math.pow(10,nbOfZerro) * firstNumber + Math.pow(10,nbOfZerro)
+    return Math.pow(10, nbOfZerro) * firstNumber + Math.pow(10, nbOfZerro);
   }
 };

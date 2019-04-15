@@ -1,2 +1,2 @@
-var token = 'BOTTOKEN';
+const token = 'BOTTOKEN';
 module.exports = token;
